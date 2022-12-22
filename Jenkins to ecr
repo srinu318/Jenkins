@@ -45,3 +45,34 @@ pipeline {
       }
     }
 }
+
+
+
+
+
+
+pipeline {
+ 
+     agent any
+     
+      environment {
+          REPOSITORY_URI = "161051329185.dkr.ecr.ap-south-1.amazonaws.com/ecr"
+          }
+          
+       stages {
+            stage ("checkout") {
+              steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/main']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/srinu318/spring-petclinic.git']]])
+            }
+        }
+        
+        stage ("Docker Build") {          
+           stpes {
+             script {
+              dockerImage = docker.build registry
+               }
+             }
+           }
+    }
+    
+}
